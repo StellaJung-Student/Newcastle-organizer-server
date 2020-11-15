@@ -5,8 +5,9 @@
   "main": "server/app.js",
   "scripts": {
     "start": "node server/server.js",
-    "dev": "cross-env NODE_ENV=development npx nodemon server/server.js",
-    "test": "jest"
+    "dev": "npm run prettier && cross-env NODE_ENV=development npx nodemon server/server.js",
+    "test": "jest",
+    "prettier": "npx prettier --config .prettierrc.json --write server/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -17,14 +18,27 @@
   "bugs": {
     "url": "https://github.com/Ismail-cloud/Newcastle-organizer-server/issues"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "homepage": "https://github.com/Ismail-cloud/Newcastle-organizer-server#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
-    "dotenv": "^8.2.0",
+    "eslint": "^7.13.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.0",
     "jest": "^26.6.3",
+    "prettier": "^2.1.2",
+    "pretty-quick": "^3.1.0",
     "supertest": "^6.0.1"
   }
 }

@@ -1,0 +1,19 @@
+{
+  "name": "newcastle-organizer-server",
+  "version": "1.0.0",
+  "description": "Trello clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ismail-cloud/Newcastle-organizer-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ismail-cloud/Newcastle-organizer-server/issues"
+  },
+  "homepage": "https://github.com/Ismail-cloud/Newcastle-organizer-server#readme"
+}

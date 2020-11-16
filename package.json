@@ -7,7 +7,7 @@
     "start": "node server/server.ts",
     "dev": "npm run prettier && cross-env NODE_ENV=development npx nodemon server/server.ts",
     "test": "jest --forceExit --coverage --verbose",
-    "prettier": "npx prettier --config .prettierrc.json --write server/**/*.js",
+    "prettier": "npx prettier --config .prettierrc.json --write server/**/*.ts",
     "build": "npm run build-ts && npm run lint",
     "build-ts": "tsc",
     "debug": "npm run build && npm run watch-debug",

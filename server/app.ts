@@ -1,14 +1,29 @@
-import express, { Express } from 'express';
+import express, { Express, urlencoded, json } from 'express';
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
+import GoogleAuthRouter from './router/auth/google';
+import './security/passport';
+import { isCorrectToken } from './helpers/jwt';
+import AuthRouter from './router/auth/auth';
 
 const app: Express = express();
+
+app.use(urlencoded({ extended: true }));
+app.use(json());
+app.use(cookieParser());
+
+app.use(passport.initialize());
 
 /**
  * Dummy route
  */
-app.get('/', (req, res) => {
+app.get('/', isCorrectToken, (req, res) => {
   res.status(200).send({
     data: 'Hello!',
   });
 });
+
+app.use(GoogleAuthRouter);
+app.use('/auth', AuthRouter);
 
 export default app;

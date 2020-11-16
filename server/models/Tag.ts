@@ -1,17 +1,18 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export default class Tags {
+export default class Tag {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string;
+  title: string;
 
   @Column()
   color: string;
 
-  constructor(name: string) {
-    this.name = name;
+  constructor(title: string, color: string) {
+    this.title = title;
+    this.color = color;
   }
 }

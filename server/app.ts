@@ -16,7 +16,7 @@ app.use(passport.initialize());
 /**
  * Dummy route
  */
-app.get('/', isCorrectToken, (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).send({
     data: 'Hello!',
   });

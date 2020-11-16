@@ -6,12 +6,13 @@ export default class Tags {
   id: number;
 
   @Column()
-  name: string;
+  title: string;
 
   @Column()
   color: string;
 
-  constructor(name: string) {
-    this.name = name;
+  constructor(title: string, color: string) {
+    this.title = title;
+    this.color = color;
   }
 }

@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import './security/passport';
 import app from './app';
 import { createConnection } from 'typeorm';
 

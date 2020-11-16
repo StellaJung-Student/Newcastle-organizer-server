@@ -1,10 +1,9 @@
 import express, { Express, urlencoded, json } from 'express';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
-import GoogleAuthRouter from './router/auth/google';
-import './security/passport';
 import { isCorrectToken } from './helpers/jwt';
 import AuthRouter from './router/auth/auth';
+import GoogleAuthRouter from './router/auth/google';
 
 const app: Express = express();
 

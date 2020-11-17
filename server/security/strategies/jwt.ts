@@ -11,19 +11,23 @@ const strategy = () => {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: JWT_SECRET,
       },
-      function (jwt_payload, next) {
+      async function (jwt_payload, next) {
         const userRepository = getRepository(User);
-        console.log('payload received', jwt_payload);
         // usually this would be a database call:
-        const user = userRepository.findOne({
-          where: {
-            id: jwt_payload.id,
-          },
-        });
-        if (user) {
-          next(null, user);
-        } else {
-          next(null, false);
+        try {
+          console.log(jwt_payload.data.id);
+          const user = await userRepository.findOne({
+            where: {
+              id: jwt_payload.data.id,
+            },
+          });
+          if (user) {
+            next(null, user);
+          } else {
+            next(null, false);
+          }
+        } catch (e) {
+          next(e, false);
         }
       }
     )

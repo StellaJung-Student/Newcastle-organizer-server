@@ -1,15 +1,24 @@
-import express, { Express, urlencoded, json } from 'express';
+import express, { Express, json, urlencoded } from 'express';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
-import { isCorrectToken } from './helpers/jwt';
 import AuthRouter from './router/auth/auth';
 import GoogleAuthRouter from './router/auth/google';
+import cors from 'cors';
+import { BASE_API_URL } from './configs/baseConfig';
+import ProjectRouter from './router/resources/projects';
 
 const app: Express = express();
 
 app.use(urlencoded({ extended: true }));
 app.use(json());
 app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: BASE_API_URL,
+    credentials: true,
+  })
+);
 
 app.use(passport.initialize());
 
@@ -22,7 +31,8 @@ app.get('/', (req, res) => {
   });
 });
 
-app.use(GoogleAuthRouter);
+app.use('/auth/google', GoogleAuthRouter);
 app.use('/auth', AuthRouter);
+app.use('/api/projects', ProjectRouter);
 
 export default app;

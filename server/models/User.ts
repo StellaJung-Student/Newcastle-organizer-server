@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import Project from './Project';
 
 @Entity()
 export default class User {
@@ -19,6 +20,9 @@ export default class User {
 
   @Column({ nullable: true })
   facebookId: string;
+
+  @OneToMany((type) => Project, (project) => project.owner)
+  projects: Project[];
 
   constructor(name: string, email: string, password: string, googleId: string, facebookId: string) {
     this.name = name;

@@ -17,8 +17,12 @@ googleAuthRouter.get(
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
     const user: User = req.user as User;
-    return res.status(200).json({ accessToken: signToken(user) });
-    //.redirect('/');
+    return res
+      .status(200)
+      .cookie('jwt', signToken(user), {
+        httpOnly: true,
+      })
+      .redirect('/');
   }
 );
 

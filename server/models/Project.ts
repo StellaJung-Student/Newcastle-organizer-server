@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, OneToMany } from 'typeorm';
 import Tag from './Tag';
 
 @Entity()
@@ -9,9 +9,15 @@ export default class Project {
   @Column()
   title: string;
 
-  @Column('text')
+  @Column()
   description: string;
 
-  @ManyToMany(() => Tag)
+  @Column()
+  imageUrl: string;
+
+  @Column()
+  status: string;
+
+  @OneToMany(() => Tag, (tag) => tag.id)
   tags: Tag[];
 }

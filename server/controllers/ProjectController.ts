@@ -3,10 +3,6 @@ import { getRepository } from 'typeorm';
 import Project from '../models/Project';
 import User from '../models/User';
 
-interface RequestUser {
-  data: User;
-}
-
 export default class ProjectController {
   /**
    * Get all the projects

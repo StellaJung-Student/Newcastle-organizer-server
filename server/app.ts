@@ -6,6 +6,8 @@ import GoogleAuthRouter from './router/auth/google';
 import cors from 'cors';
 import { BASE_API_URL } from './configs/baseConfig';
 import ProjectRouter from './router/resources/projects';
+import TaskRouter from './router/resources/tasks';
+import TagRouter from './router/resources/tags';
 
 const app: Express = express();
 
@@ -34,5 +36,7 @@ app.get('/', (req, res) => {
 app.use('/auth/google', GoogleAuthRouter);
 app.use('/auth', AuthRouter);
 app.use('/api/projects', ProjectRouter);
+app.use(TaskRouter);
+app.use(TagRouter);
 
 export default app;

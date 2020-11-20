@@ -1,1 +1,3 @@
-export default interface IController {}
+export default interface IController<T> {
+  save: (object: T) => void;
+}

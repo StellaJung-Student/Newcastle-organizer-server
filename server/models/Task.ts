@@ -1,6 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import Comment from './Comment';
-import Project from './Project';
+import ProjectList from './ProjectList';
 
 @Entity()
 export default class Task {
@@ -13,8 +13,8 @@ export default class Task {
   @Column({ nullable: true, default: '' })
   description: string;
 
-  @ManyToOne(() => Project, (project) => project.tasks)
-  project: Project;
+  @ManyToOne(() => ProjectList, (projectList) => projectList.tasks)
+  projectList: ProjectList;
 
   @OneToMany(() => Comment, (comment) => comment.id)
   comments: Comment[];

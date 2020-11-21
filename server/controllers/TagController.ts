@@ -96,7 +96,7 @@ export default class TagController {
   static async updateTagByProjectId(req: Request, res: Response, next: NextFunction) {
     const tagRepository = getRepository(Tag);
     const { id, title = '', color = '' } = req.body;
-    let tag = new Tag(title, color);
+    const tag = new Tag(title, color);
     try {
       await tagRepository.update(id, tag);
       return res.status(200).json(tag);

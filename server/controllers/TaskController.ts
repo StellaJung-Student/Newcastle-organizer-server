@@ -96,7 +96,7 @@ export default class TaskController {
   static async updateTaskByProjectId(req: Request, res: Response, next: NextFunction) {
     const taskRepository = getRepository(Task);
     const { id, title = '', description = '' } = req.body;
-    let task = new Task(title, description);
+    const task = new Task(title, description);
     try {
       await taskRepository.update(id, task);
       return res.status(200).json(task);

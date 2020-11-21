@@ -12,7 +12,7 @@ export const signToken = (user: User) => {
   delete user.password;
 
   return jwt.sign({ data: user }, JWT_SECRET, {
-    expiresIn: 9999999,
+    expiresIn: 300,
   });
 };
 

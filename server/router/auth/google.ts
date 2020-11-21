@@ -6,13 +6,13 @@ import { signToken } from '../../helpers/jwt';
 const googleAuthRouter = Router();
 
 googleAuthRouter.get(
-  ``,
+  '',
   passport.authenticate('google', {
     scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'],
   })
 );
 
-googleAuthRouter.get(`/callback`, passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+googleAuthRouter.get('/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
   const user: User = req.user as User;
   return res
     .status(200)

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import Project from './Project';
 
 @Entity()
 export default class Tag {
@@ -10,6 +11,9 @@ export default class Tag {
 
   @Column()
   color: string;
+
+  @ManyToOne(() => Project, (project) => project.tags)
+  project: Project;
 
   constructor(title: string, color: string) {
     this.title = title;

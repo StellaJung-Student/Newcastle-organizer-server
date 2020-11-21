@@ -14,7 +14,7 @@ const strategy = () => {
       async function (email, password, done) {
         const userRepository = getRepository(User);
         try {
-          let user = await userRepository.findOne({
+          const user = await userRepository.findOne({
             where: {
               email,
             },

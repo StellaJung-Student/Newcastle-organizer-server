@@ -10,8 +10,7 @@ import {
 } from 'typeorm';
 import Tag from './Tag';
 import User from './User';
-import Task from './Task';
-import ProjectColumn from './ProjectColumn';
+import ProjectList from './ProjectList';
 
 @Entity()
 export default class Project {
@@ -33,11 +32,8 @@ export default class Project {
   @OneToMany(() => Tag, (tag) => tag.id)
   tags: Tag[];
 
-  @OneToMany(() => ProjectColumn, (column) => column.id)
-  columns: ProjectColumn[];
-
-  @OneToMany(() => Task, (task) => task.id)
-  tasks: Task[];
+  @OneToMany(() => ProjectList, (column) => column.id)
+  projectLists: ProjectList[];
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })

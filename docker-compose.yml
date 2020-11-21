@@ -1,0 +1,18 @@
+version: '3.1'
+services:
+  app:
+    container_name: trostrum-server
+    image: trostrum-server
+    build: ./
+    ports:
+      - '8000:8000'
+    depends_on:
+      - postgresdb
+  postgresdb:
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=Chinnichi2812?
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=newcastle

@@ -13,10 +13,19 @@ export default class Task {
   @Column({ nullable: true, default: '' })
   description: string;
 
-  @ManyToOne(() => ProjectList, (projectList) => projectList.tasks)
+  @Column('character varying', { array: true, nullable: true })
+  labels: string[];
+
+  @Column('character varying', { array: true, nullable: true })
+  attachments: string[];
+
+  @Column({ type: 'date', nullable: false })
+  deadlineDate: string;
+
+  @ManyToOne(() => ProjectList, (projectList) => projectList.tasks, { onDelete: 'CASCADE' })
   projectList: ProjectList;
 
-  @OneToMany(() => Comment, (comment) => comment.id)
+  @OneToMany(() => Comment, (comment) => comment.task)
   comments: Comment[];
 
   constructor(title: string, description: string) {

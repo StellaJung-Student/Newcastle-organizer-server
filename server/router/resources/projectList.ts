@@ -10,19 +10,19 @@ ProjectListRouter.get(
 );
 
 ProjectListRouter.post(
-  '/projects/:projectId/projectLists/:projectListId',
+  '/projects/:projectId/projectLists',
   //passport.authenticate('jwt', { session: false }),
-  ProjectListController.findProjectListByIdByProjectId
+  ProjectListController.saveProjectList
 );
 
 ProjectListRouter.patch(
   '/projects/:projectId/projectLists',
   //isCorrectToken,
-  ProjectListController.saveProjectList
+  ProjectListController.updateProjectList
 );
 
 ProjectListRouter.delete(
-  '/projectLists/:projectListId',
+  '/projects/:projectId/projectLists/:projectListId',
   //isCorrectToken,
   ProjectListController.deleteProjectListById
 );

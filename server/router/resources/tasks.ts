@@ -7,13 +7,9 @@ const TaskRouter = Router();
 TaskRouter.get(
   '/projectLists/:projectListId/tasks/:taskId',
   //passport.authenticate('jwt', { session: false }),
-  TaskController.findTaskByProjectId
+  TaskController.findTaskById
 );
-TaskRouter.get(
-  '/projectLists/:projectListId/tasks',
-  //passport.authenticate('jwt', { session: false }),
-  TaskController.findTaskByIdAndProjectId
-);
+
 TaskRouter.post(
   '/projectLists/:projectListId/tasks',
   //passport.authenticate('jwt', { session: false }),
@@ -24,6 +20,10 @@ TaskRouter.patch(
   //passport.authenticate('jwt', { session: false }),
   TaskController.updateTaskByProjectId
 );
-TaskRouter.delete('/', passport.authenticate('jwt', { session: false }), TaskController.deleteTaskById);
+TaskRouter.delete(
+  '/projectLists/:projectListId/tasks/:taskId',
+  //passport.authenticate('jwt', { session: false }),
+  TaskController.deleteTaskById
+);
 
 export default TaskRouter;

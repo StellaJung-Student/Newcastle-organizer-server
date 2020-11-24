@@ -23,7 +23,7 @@ export default class Project {
   @Column({ nullable: false })
   description: string;
 
-  @Column()
+  @Column({ nullable: true })
   imageUrl: string;
 
   @Column()

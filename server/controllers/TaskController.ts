@@ -1,49 +1,22 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import Project from '../models/Project';
 import Task from '../models/Task';
+import ProjectList from '../models/ProjectList';
 
 export default class TaskController {
-  /**
-   * Get all the projects
-   * @param req
-   * @param res
-   * @param next
-   */
-  static async findTaskByProjectId(req: Request, res: Response, next: NextFunction) {
-    const { projectId } = req.params;
-
-    const projectRepository = getRepository(Task);
-    try {
-      const projects = await projectRepository.find({
-        where: {
-          projectId: projectId,
-        },
-      });
-      if (projects.length === 0) {
-        return res.status(200).json([]);
-      }
-      return res.status(200).json(projects);
-    } catch (e) {
-      return res.status(500).json(e);
-    }
-  }
-
   /**
    * Find task by id
    * @param req
    * @param res
-   * @param next
    */
-  static async findTaskByIdAndProjectId(req: Request, res: Response, next: NextFunction) {
-    const { id, projectId } = req.params;
+  static async findTaskById(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
 
     const projectRepository = getRepository(Task);
     try {
       const task = await projectRepository.findOne({
         where: {
           id: id,
-          projectId: projectId,
         },
       });
       if (task) {
@@ -61,20 +34,32 @@ export default class TaskController {
    * Save task to project according to project id
    * @param req
    * @param res
-   * @param next
    */
-  static async saveTask(req: Request, res: Response, next: NextFunction) {
-    const { projectId } = req.params;
+  static async saveTask(req: Request, res: Response): Promise<Response> {
+    const { projectListId } = req.params;
 
     const taskRepository = getRepository(Task);
-    const projectRepository = getRepository(Project);
-    const { title = '', description = '' } = req.body;
+    const projectListRepository = getRepository(ProjectList);
+    const {
+      id = null,
+      title = '',
+      description = '',
+      deadlineDate = new Date(),
+      attachments = [],
+      comments = [],
+      labels = [],
+    } = req.body;
     let task = new Task(title, description);
+    task.id = id;
+    task.labels = labels;
+    task.attachments = attachments;
+    task.comments = comments;
+    task.deadlineDate = deadlineDate;
 
     try {
-      task.project = await projectRepository.findOne({
+      task.projectList = await projectListRepository.findOne({
         where: {
-          id: projectId,
+          id: projectListId,
         },
       });
       task = await taskRepository.save(task);
@@ -91,9 +76,8 @@ export default class TaskController {
    * Update task to project according to project id
    * @param req
    * @param res
-   * @param next
    */
-  static async updateTaskByProjectId(req: Request, res: Response, next: NextFunction) {
+  static async updateTaskByProjectId(req: Request, res: Response): Promise<Response> {
     const taskRepository = getRepository(Task);
     const { id, title = '', description = '' } = req.body;
     const task = new Task(title, description);
@@ -110,15 +94,14 @@ export default class TaskController {
    * Delete task to project according to project id
    * @param req
    * @param res
-   * @param next
    */
-  static async deleteTaskById(req: Request, res: Response, next: NextFunction) {
+  static async deleteTaskById(req: Request, res: Response): Promise<Response> {
     const { taskId } = req.params;
 
     const taskRepository = getRepository(Task);
     try {
       await taskRepository.delete(taskId);
-      return res.status(204);
+      return res.status(204).json('ok');
     } catch (e) {
       console.log(e);
       return res.status(500).json(e);

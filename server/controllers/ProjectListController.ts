@@ -24,7 +24,10 @@ export default class ProjectListController {
       });
 
       const projectLists = await projectListRepository.find({
-        relations: ['tasks'],
+        relations: ['tasks', 'tasks.comments'],
+        order: {
+          id: 'ASC',
+        },
         where: {
           project: project,
         },
@@ -94,6 +97,27 @@ export default class ProjectListController {
   }
 
   /**
+   * Save project list
+   * @param req
+   * @param res
+   */
+  static async updateProjectList(req: Request, res: Response): Promise<Response> {
+    const projectListRepository = getRepository(ProjectList);
+    const { id, title = '', tasks = [] } = req.body;
+    const projectList = new ProjectList();
+    projectList.title = title;
+    projectList.tasks = tasks;
+    projectList.id = id;
+    try {
+      await projectListRepository.save(projectList);
+      return res.status(200).json(projectList);
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json(e);
+    }
+  }
+
+  /**
    * Delete project list project list id
    * @param req
    * @param res
@@ -103,8 +127,9 @@ export default class ProjectListController {
     const projectListRepository = getRepository(ProjectList);
     try {
       await projectListRepository.delete(projectListId);
-      return res.status(204);
+      return res.status(204).json('ok');
     } catch (e) {
+      console.log(e);
       return res.status(500).json(e);
     }
   }

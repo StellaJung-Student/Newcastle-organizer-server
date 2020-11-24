@@ -10,7 +10,7 @@ export default class ProjectList {
   @Column()
   title: string;
 
-  @ManyToOne(() => Project, (project) => project.projectLists)
+  @ManyToOne(() => Project, (project) => project.projectLists, { onDelete: 'CASCADE' })
   project: Project;
 
   @OneToMany(() => Task, (task) => task.projectList)

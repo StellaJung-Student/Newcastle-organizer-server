@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth/google', GoogleAuthRouter);
-app.use('/auth', AuthRouter);
+app.use('/api/auth', AuthRouter);
 app.use('/api/projects', ProjectRouter);
 app.use('/api', TaskRouter);
 app.use('/api', ProjectListRouter);

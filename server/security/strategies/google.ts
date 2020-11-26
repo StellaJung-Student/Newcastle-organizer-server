@@ -24,7 +24,7 @@ const strategy = () => {
           if (user != null) {
             return cb(null, user);
           } else {
-            user = new User(profile.username || '', profile.emails[0].value, '', profile.id, '');
+            user = new User(profile.emails[0].value, '', '', '', profile.username || '', profile.id, '');
             user = await userRepository.save(user);
             return cb(null, user);
           }

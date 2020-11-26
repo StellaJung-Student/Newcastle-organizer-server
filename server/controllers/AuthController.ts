@@ -10,9 +10,9 @@ export default class AuthController {
    * @param req
    * @param res
    */
-  static signUp = async (req: Request, res: Response) => {
+  static signUp = async (req: Request, res: Response): Promise<Response> => {
     //Get name, email, password
-    const { name, email, password } = req.body;
+    const { firstname = '', lastname = '', username = '', email, password } = req.body;
     //Verify if user enter
     if (!/\b\w+\@\w+\.\w+(?:\.\w+)?\b/.test(email)) {
       return res.status(500).json({ success: false, data: 'Enter a valid email address.' });
@@ -27,11 +27,12 @@ export default class AuthController {
     try {
       //Hash password before inserting to database
       const hashedPassword = await hashPassword(password);
-      await userRepository.save(new User(name, email, hashedPassword, null, null));
+      await userRepository.save(new User(email, hashedPassword, firstname, lastname, username, null, null));
       res.status(201).json({
         message: 'Account created',
       });
     } catch (e) {
+      console.log(e);
       res.status(500).json(e);
     }
   };
@@ -41,13 +42,13 @@ export default class AuthController {
    * @param req
    * @param res
    */
-  static login = async (req: Request, res: Response) => {
+  static login = async (req: Request, res: Response): Promise<Response> => {
     const { email, password } = req.body;
 
     // usually this would be a database call:
     const user = await getRepository(User).findOne({ email });
     if (!user) {
-      res.status(401).json({ message: 'no such user found' });
+      return res.status(401).json({ message: 'no such user found' });
     }
 
     try {
@@ -56,12 +57,15 @@ export default class AuthController {
         // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
         //const payload = {id: user.id};
         const token = signToken(user);
-        res.json({ message: 'ok', token: token });
+        delete user.firstname;
+        delete user.lastname;
+        delete user.email;
+        return res.json({ user, accessToken: token });
       } else {
-        res.status(401).json({ message: 'passwords did not match' });
+        return res.status(401).json({ message: 'passwords did not match' });
       }
     } catch (e) {
-      res.status(500).json(e);
+      return res.status(500).json(e);
     }
   };
 }

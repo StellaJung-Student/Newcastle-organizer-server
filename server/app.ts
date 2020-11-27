@@ -17,8 +17,8 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    //origin: 'https://newcastle-organizer.vercel.app/',
-    //credentials: true,
+    origin: ['https://newcastle-organizer.vercel.app/', 'http://localhost:3000'],
+    credentials: true,
   })
 );
 

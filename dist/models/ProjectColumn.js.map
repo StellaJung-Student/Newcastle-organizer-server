@@ -1,0 +1,1 @@
+{"version":3,"file":"ProjectColumn.js","sourceRoot":"","sources":["../../server/models/ProjectColumn.ts"],"names":[],"mappings":";;;;;;;;;;;AAAA,qCAAiE;AAGjE,IAAqB,aAAa,GAAlC,MAAqB,aAAa;CAMjC,CAAA;AAJC;IADC,gCAAsB,EAAE;;yCACd;AAGX;IADC,gBAAM,EAAE;;4CACK;AALK,aAAa;IADjC,gBAAM,EAAE;GACY,aAAa,CAMjC;kBANoB,aAAa"}

@@ -4,7 +4,6 @@ import cookieParser from 'cookie-parser';
 import AuthRouter from './router/auth/auth';
 import GoogleAuthRouter from './router/auth/google';
 import cors from 'cors';
-import { BASE_API_URL } from './configs/baseConfig';
 import ProjectRouter from './router/resources/projects';
 import TaskRouter from './router/resources/tasks';
 import TagRouter from './router/resources/tags';
@@ -18,7 +17,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: BASE_API_URL,
+    origin: '*',
     credentials: true,
   })
 );

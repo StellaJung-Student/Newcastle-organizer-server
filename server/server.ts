@@ -14,9 +14,9 @@ createConnection({
   database: AWS_RDS_INIT_DB,
   synchronize: true,
   logging: true,
-  entities: ['dist/models/**/*.*'],
-  migrations: ['dist/migration/**/*.*'],
-  subscribers: ['dist/subscriber/**/*.*'],
+  entities: ['server/models/**/*.*'],
+  migrations: ['server/migration/**/*.*'],
+  subscribers: ['server/subscriber/**/*.*'],
   cli: {
     entitiesDir: 'dist/models',
     migrationsDir: 'dist/migration',

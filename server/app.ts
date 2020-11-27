@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: '*',
+    origin: 'https://newcastle-organizer.vercel.app/',
     credentials: true,
   })
 );

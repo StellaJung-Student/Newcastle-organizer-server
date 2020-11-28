@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/server.ts",
     "dev": "tsc && npm run prettier && cross-env NODE_ENV=development npx nodemon server/server.ts",
-    "test": "jest --forceExit --coverage --verbose",
+    "test": "cross-env NODE_ENV=test jest --forceExit --coverage --verbose",
     "prettier": "npx prettier --config .prettierrc.json --write server/**/*.ts",
     "build": "npm run build-ts && npm run lint",
     "build-ts": "tsc",
@@ -49,7 +49,8 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "pg": "^8.5.1",
-    "typeorm": "^0.2.29"
+    "typeorm": "^0.2.29",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@types/async": "^3.2.3",
@@ -68,6 +69,7 @@
     "@types/passport-jwt": "^3.0.3",
     "@types/passport-local": "^1.0.33",
     "@types/supertest": "^2.0.10",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",
     "cross-env": "^7.0.2",

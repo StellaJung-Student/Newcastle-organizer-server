@@ -6,6 +6,14 @@ describe('Test IndexController', () => {
     const result = await request(app).get('/').send();
 
     expect(result.status).toBe(200);
-    expect(result.body.data).toBe('Hello!');
+    expect(result.body.message).toBe('Hello!');
+  });
+
+  it('Request /whatEverRoute should return 404!', async () => {
+    const result = await request(app).get('/whatEverRoute').send();
+
+    expect(result.status).toBe(404);
+    console.log(result.body);
+    expect(result.body.message).toBe('Nothing here!');
   });
 });

@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import ProjectController from '../../controllers/ProjectController';
-import { isCorrectToken } from '../../helpers/jwt';
 import passport from 'passport';
 
 const ProjectRouter = Router();

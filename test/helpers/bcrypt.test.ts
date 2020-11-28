@@ -1,11 +1,11 @@
-import request from 'supertest';
-import app from '../../server/app';
+import { comparePassword, hashPassword } from '../../server/helpers/bcrypt';
 
-describe('Test IndexController', () => {
-  it('Request / should return Hello!', async () => {
-    const result = await request(app).get('/').send();
-
-    expect(result.status).toBe(200);
-    expect(result.body.data).toBe('Hello!');
+describe('Test Bcrypt', () => {
+  it('Test compare and hashing password', async () => {
+    const password = 'test';
+    const falsePassword = 'test1';
+    const hashedPassword = await hashPassword(password);
+    expect(await comparePassword(password, hashedPassword)).toBe(true);
+    expect(await comparePassword(falsePassword, hashedPassword)).toBe(false);
   });
 });

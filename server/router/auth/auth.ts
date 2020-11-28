@@ -12,9 +12,6 @@ AuthRouter.post('/signup', AuthController.signUp);
 
 AuthRouter.post('/login', AuthController.login);
 
-//TODO: Testing purpose, delete later
-AuthRouter.get('/secret', passport.authenticate('jwt', { session: false }), function (req, res) {
-  res.json('Success! You can not see this without a token');
-});
+AuthRouter.post('/refresh', AuthController.refresh);
 
 export default AuthRouter;

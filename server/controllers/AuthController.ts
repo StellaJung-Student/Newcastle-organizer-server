@@ -3,6 +3,8 @@ import { getRepository } from 'typeorm';
 import User from '../models/User';
 import { comparePassword, hashPassword } from '../helpers/bcrypt';
 import { signToken } from '../helpers/jwt';
+import { v4 as uuidv4 } from 'uuid';
+import RefreshToken from '../models/RefreshToken';
 
 export default class AuthController {
   /**
@@ -59,13 +61,54 @@ export default class AuthController {
         const token = signToken(user);
         delete user.firstname;
         delete user.lastname;
+        delete user.password;
         delete user.email;
-        return res.json({ user, accessToken: token });
+        delete user.googleId;
+        delete user.facebookId;
+        const refreshTokenModel = new RefreshToken();
+        const refreshToken = uuidv4();
+        refreshTokenModel.refreshToken = refreshToken;
+        refreshTokenModel.user = user;
+        await getRepository(RefreshToken).save(refreshTokenModel);
+        return res
+          .cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+          })
+          .json({ user, accessToken: token });
       } else {
         return res.status(401).json({ message: 'passwords did not match' });
       }
     } catch (e) {
       return res.status(500).json(e);
+    }
+  };
+
+  static refresh = async (req: Request, res: Response): Promise<Response> => {
+    const refreshToken = req.cookies.refreshToken;
+    try {
+      const refreshTokenModel = await getRepository(RefreshToken).findOne({
+        where: {
+          refreshToken,
+        },
+      });
+      const user = refreshTokenModel.user;
+      if (user) {
+        const token = signToken(user);
+        delete user.firstname;
+        delete user.lastname;
+        delete user.password;
+        delete user.email;
+        delete user.googleId;
+        delete user.facebookId;
+        return res.status(200).json({
+          accessToken: token,
+        });
+      }
+      return res.status(403).json({
+        message: 'Cannot be accessed',
+      });
+    } catch (e) {
+      res.status(500).json(e);
     }
   };
 }

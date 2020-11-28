@@ -22,7 +22,7 @@ googleAuthRouter.get('/callback', passport.authenticate('google', { failureRedir
     .redirect('/');
 });
 
-googleAuthRouter.get('/logout', async (req, res, next) => {
+googleAuthRouter.get('/logout', async (req, res) => {
   try {
     req.logOut();
     res.status(204);

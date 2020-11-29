@@ -15,6 +15,7 @@ const app: Express = express();
 
 app.set('trust proxy', 1); // trust first proxy
 
+/*
 app.use(
   session({
     name: 'session',
@@ -27,6 +28,7 @@ app.use(
     expires: new Date(Date.now() + 60 * 60 * 1000 * 24 * 365),
   })
 );
+*/
 
 app.use(urlencoded({ extended: true }));
 app.use(json());

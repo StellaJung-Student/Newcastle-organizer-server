@@ -38,7 +38,7 @@ googleAuthRouter.get('/callback', passport.authenticate('google', { failureRedir
     .cookie('refreshToken', refreshToken, {
       httpOnly: true,
     })
-    .redirect('https://newcastle-organizer.vercel.app/projects');
+    .redirect('https://newcastle-organizer.vercel.app/boards');
 });
 
 googleAuthRouter.get('/logout', async (req, res) => {

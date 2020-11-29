@@ -140,7 +140,7 @@ var strategy = function () {
       {
         clientID: baseConfig_1.GOOGLE_CLIENT_ID,
         clientSecret: baseConfig_1.GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/auth/google/callback',
+        callbackURL: 'http://localhost:8080/auth/google/callback',
         userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
       },
       function (accessToken, refreshToken, profile, cb) {
@@ -152,31 +152,35 @@ var strategy = function () {
                 userRepository = typeorm_1.getRepository(User_1.default);
                 _a.label = 1;
               case 1:
-                _a.trys.push([1, 6, , 7]);
+                _a.trys.push([1, 7, , 8]);
                 return [
                   4 /*yield*/,
                   userRepository.findOne({
                     where: {
-                      id: 1,
+                      email: profile.emails[0].value,
                     },
                   }),
                 ];
               case 2:
                 user = _a.sent();
-                if (!(user != null)) return [3 /*break*/, 3];
-                return [2 /*return*/, cb(null, user)];
+                if (!(user != null)) return [3 /*break*/, 4];
+                return [4 /*yield*/, userRepository.save(user)];
               case 3:
+                user = _a.sent();
+                user.googleId = profile.id;
+                return [2 /*return*/, cb(null, user)];
+              case 4:
                 user = new User_1.default(profile.emails[0].value, '', '', '', profile.username || '', profile.id, '');
                 return [4 /*yield*/, userRepository.save(user)];
-              case 4:
+              case 5:
                 user = _a.sent();
                 return [2 /*return*/, cb(null, user)];
-              case 5:
-                return [3 /*break*/, 7];
               case 6:
+                return [3 /*break*/, 8];
+              case 7:
                 e_1 = _a.sent();
                 return [2 /*return*/, cb(e_1, null)];
-              case 7:
+              case 8:
                 return [2 /*return*/];
             }
           });

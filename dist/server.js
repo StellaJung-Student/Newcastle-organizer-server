@@ -143,13 +143,13 @@ typeorm_1
     database: baseConfig_1.AWS_RDS_INIT_DB,
     synchronize: true,
     logging: true,
-    entities: ['server/models/**/*.*'],
-    migrations: ['server/migration/**/*.*'],
-    subscribers: ['server/subscriber/**/*.*'],
+    entities: [baseConfig_1.DB_ENTITIES],
+    migrations: [baseConfig_1.DB_MIGRATIONS],
+    subscribers: [baseConfig_1.DB_SUBSCRIBERS],
     cli: {
-      entitiesDir: 'server/models',
-      migrationsDir: 'server/migration',
-      subscribersDir: 'server/subscriber',
+      entitiesDir: baseConfig_1.DIR_ENTITIES,
+      migrationsDir: baseConfig_1.DIR_MIGRATIONS,
+      subscribersDir: baseConfig_1.DB_SUBSCRIBERS,
     },
   })
   .then(function () {

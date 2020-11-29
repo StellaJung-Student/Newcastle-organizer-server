@@ -9,8 +9,24 @@ import UserProjectRouter from './router/resources/user/projects';
 import TaskRouter from './router/resources/tasks';
 import TagRouter from './router/resources/tags';
 import ProjectListRouter from './router/resources/projectList';
+import session from 'cookie-session';
 
 const app: Express = express();
+
+app.set('trust proxy', 1); // trust first proxy
+
+app.use(
+  session({
+    name: 'session',
+    keys: ['Hello', 'Holla'],
+    secret: 'what the hell is this secret',
+    httpOnly: false,
+    secure: process.env.NODE_ENV !== 'development',
+    domain: 'vercel.app',
+    path: '/',
+    expires: new Date(Date.now() + 60 * 60 * 1000 * 24 * 365),
+  })
+);
 
 app.use(urlencoded({ extended: true }));
 app.use(json());

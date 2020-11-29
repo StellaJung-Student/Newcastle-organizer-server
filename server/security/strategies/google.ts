@@ -10,7 +10,7 @@ const strategy = () => {
       {
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: 'https://fast-island-78566.herokuapp.com/auth/google/callback',
+        callbackURL: 'http://localhost:8080/auth/google/callback',
         userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
       },
       async function (accessToken, refreshToken, profile, cb) {

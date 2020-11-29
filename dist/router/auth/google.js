@@ -131,6 +131,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var express_1 = require('express');
 var passport_1 = __importDefault(require('passport'));
 var jwt_1 = require('../../helpers/jwt');
+var RefreshToken_1 = __importDefault(require('../../models/RefreshToken'));
+var uuid_1 = require('uuid');
 var googleAuthRouter = express_1.Router();
 googleAuthRouter.get(
   '',
@@ -143,12 +145,29 @@ googleAuthRouter.get('/callback', passport_1.default.authenticate('google', { fa
   res
 ) {
   var user = req.user;
+  var token = jwt_1.signToken(user);
+  delete user.firstname;
+  delete user.lastname;
+  delete user.password;
+  delete user.email;
+  delete user.googleId;
+  delete user.facebookId;
+  var refreshTokenModel = new RefreshToken_1.default();
+  var refreshToken = uuid_1.v4();
+  refreshTokenModel.refreshToken = refreshToken;
+  refreshTokenModel.user = user;
   return res
     .status(200)
-    .cookie('jwt', jwt_1.signToken(user), {
+    .cookie('accessToken', token, {
+      httpOnly: false,
+    })
+    .cookie('user', user, {
+      httpOnly: false,
+    })
+    .cookie('refreshToken', refreshToken, {
       httpOnly: true,
     })
-    .redirect('/');
+    .redirect('https://newcastle-organizer.vercel.app/boards');
 });
 googleAuthRouter.get('/logout', function (req, res) {
   return __awaiter(void 0, void 0, void 0, function () {

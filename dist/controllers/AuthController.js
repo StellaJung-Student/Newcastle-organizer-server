@@ -224,6 +224,7 @@ var AuthController = /** @class */ (function () {
             token = jwt_1.signToken(user);
             delete user.firstname;
             delete user.lastname;
+            delete user.password;
             delete user.email;
             delete user.googleId;
             delete user.facebookId;
@@ -234,7 +235,14 @@ var AuthController = /** @class */ (function () {
             return [4 /*yield*/, typeorm_1.getRepository(RefreshToken_1.default).save(refreshTokenModel)];
           case 4:
             _b.sent();
-            return [2 /*return*/, res.json({ user: user, accessToken: token, refreshToken: refreshToken })];
+            return [
+              2 /*return*/,
+              res
+                .cookie('refreshToken', refreshToken, {
+                  httpOnly: true,
+                })
+                .json({ user: user, accessToken: token }),
+            ];
           case 5:
             return [2 /*return*/, res.status(401).json({ message: 'passwords did not match' })];
           case 6:
@@ -243,6 +251,58 @@ var AuthController = /** @class */ (function () {
             e_2 = _b.sent();
             return [2 /*return*/, res.status(500).json(e_2)];
           case 8:
+            return [2 /*return*/];
+        }
+      });
+    });
+  };
+  AuthController.refresh = function (req, res) {
+    return __awaiter(void 0, void 0, void 0, function () {
+      var refreshToken, refreshTokenModel, user, token, e_3;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            refreshToken = req.cookies.refreshToken;
+            _a.label = 1;
+          case 1:
+            _a.trys.push([1, 3, , 4]);
+            return [
+              4 /*yield*/,
+              typeorm_1.getRepository(RefreshToken_1.default).findOne({
+                where: {
+                  refreshToken: refreshToken,
+                },
+              }),
+            ];
+          case 2:
+            refreshTokenModel = _a.sent();
+            user = refreshTokenModel.user;
+            if (user) {
+              token = jwt_1.signToken(user);
+              delete user.firstname;
+              delete user.lastname;
+              delete user.password;
+              delete user.email;
+              delete user.googleId;
+              delete user.facebookId;
+              return [
+                2 /*return*/,
+                res.status(200).json({
+                  accessToken: token,
+                }),
+              ];
+            }
+            return [
+              2 /*return*/,
+              res.status(403).json({
+                message: 'Cannot be accessed',
+              }),
+            ];
+          case 3:
+            e_3 = _a.sent();
+            res.status(500).json(e_3);
+            return [3 /*break*/, 4];
+          case 4:
             return [2 /*return*/];
         }
       });

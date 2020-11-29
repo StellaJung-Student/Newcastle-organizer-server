@@ -15,20 +15,18 @@ const app: Express = express();
 
 app.set('trust proxy', 1); // trust first proxy
 
-/*
 app.use(
   session({
     name: 'session',
-    keys: ['Hello', 'Holla'],
+    keys: ['Secret', 'My little secret'],
     secret: 'what the hell is this secret',
     httpOnly: false,
     secure: process.env.NODE_ENV !== 'development',
-    domain: 'vercel.app',
-    path: '/',
+    //domain: '.vercel.app',
+    //path: '/',
     expires: new Date(Date.now() + 60 * 60 * 1000 * 24 * 365),
   })
 );
-*/
 
 app.use(urlencoded({ extended: true }));
 app.use(json());

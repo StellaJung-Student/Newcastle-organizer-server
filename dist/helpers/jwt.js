@@ -139,7 +139,7 @@ exports.signToken = function (user) {
   //Delete password property
   delete user.password;
   return jsonwebtoken_1.default.sign({ data: user }, baseConfig_1.JWT_SECRET, {
-    expiresIn: 300,
+    expiresIn: 9999999,
   });
 };
 /**

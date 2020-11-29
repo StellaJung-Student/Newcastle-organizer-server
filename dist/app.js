@@ -52,11 +52,11 @@ var projects_2 = __importDefault(require('./router/resources/user/projects'));
 var tasks_1 = __importDefault(require('./router/resources/tasks'));
 var tags_1 = __importDefault(require('./router/resources/tags'));
 var projectList_1 = __importDefault(require('./router/resources/projectList'));
-var cookie_session_1 = __importDefault(require('cookie-session'));
 var app = express_1.default();
 app.set('trust proxy', 1); // trust first proxy
+/*
 app.use(
-  cookie_session_1.default({
+  session({
     name: 'session',
     keys: ['Hello', 'Holla'],
     secret: 'what the hell is this secret',
@@ -67,6 +67,7 @@ app.use(
     expires: new Date(Date.now() + 60 * 60 * 1000 * 24 * 365),
   })
 );
+*/
 app.use(express_1.urlencoded({ extended: true }));
 app.use(express_1.json());
 app.use(cookie_parser_1.default());

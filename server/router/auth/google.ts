@@ -6,7 +6,8 @@ import RefreshToken from '../../models/RefreshToken';
 import { v4 as uuid4 } from 'uuid';
 
 const googleAuthRouter = Router();
-
+const CLIENT_URL = 'http://localhost:3000/boards';
+//https://newcastle-organizer.vercel.app/boards
 googleAuthRouter.get(
   '',
   passport.authenticate('google', {
@@ -38,7 +39,7 @@ googleAuthRouter.get('/callback', passport.authenticate('google', { failureRedir
     .cookie('refreshToken', refreshToken, {
       httpOnly: true,
     })
-    .redirect('https://newcastle-organizer.vercel.app/boards');
+    .redirect(CLIENT_URL);
 });
 
 googleAuthRouter.get('/logout', async (req, res) => {

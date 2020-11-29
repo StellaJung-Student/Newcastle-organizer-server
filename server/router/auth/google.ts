@@ -30,10 +30,10 @@ googleAuthRouter.get('/callback', passport.authenticate('google', { failureRedir
   return res
     .status(200)
     .cookie('accessToken', token, {
-      //httpOnly: true,
+      httpOnly: false,
     })
     .cookie('user', user, {
-      //httpOnly: true,
+      httpOnly: false,
     })
     .cookie('refreshToken', refreshToken, {
       httpOnly: true,

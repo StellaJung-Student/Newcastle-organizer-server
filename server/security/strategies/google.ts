@@ -10,7 +10,7 @@ const strategy = () => {
       {
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/auth/google/callback',
+        callbackURL: 'http://localhost:8080/auth/google/callback',
         userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
       },
       async function (accessToken, refreshToken, profile, cb) {
@@ -18,10 +18,12 @@ const strategy = () => {
         try {
           let user = await userRepository.findOne({
             where: {
-              id: 1,
+              email: profile.emails[0].value,
             },
           });
           if (user != null) {
+            user = await userRepository.save(user);
+            user.googleId = profile.id;
             return cb(null, user);
           } else {
             user = new User(profile.emails[0].value, '', '', '', profile.username || '', profile.id, '');

@@ -3,7 +3,18 @@ import './security/passport';
 import app from './app';
 import { createConnection } from 'typeorm';
 
-import { AWS_RDS_HOST, AWS_RDS_INIT_DB, AWS_RDS_PASSWORD, AWS_RDS_USERNAME, PORT } from './configs/baseConfig';
+import {
+  AWS_RDS_HOST,
+  AWS_RDS_INIT_DB,
+  AWS_RDS_PASSWORD,
+  AWS_RDS_USERNAME,
+  DB_ENTITIES,
+  DB_MIGRATIONS,
+  DB_SUBSCRIBERS,
+  DIR_ENTITIES,
+  DIR_MIGRATIONS,
+  PORT,
+} from './configs/baseConfig';
 
 createConnection({
   type: 'postgres',
@@ -14,13 +25,13 @@ createConnection({
   database: AWS_RDS_INIT_DB,
   synchronize: true,
   logging: true,
-  entities: ['server/models/**/*.*'],
-  migrations: ['server/migration/**/*.*'],
-  subscribers: ['server/subscriber/**/*.*'],
+  entities: [DB_ENTITIES],
+  migrations: [DB_MIGRATIONS],
+  subscribers: [DB_SUBSCRIBERS],
   cli: {
-    entitiesDir: 'server/models',
-    migrationsDir: 'server/migration',
-    subscribersDir: 'server/subscriber',
+    entitiesDir: DIR_ENTITIES,
+    migrationsDir: DIR_MIGRATIONS,
+    subscribersDir: DB_SUBSCRIBERS,
   },
 })
   .then(() => {

@@ -9,6 +9,18 @@ const googleAuthRouter = Router();
 const CLIENT_URL =
   //'http://localhost:3000/boards';
   'https://newcastle-organizer.vercel.app/boards';
+
+googleAuthRouter.get('/success', (req, res, next) => {
+  if (req.user) {
+    const user = req.user as User;
+    return res.status(200).json(user);
+  } else {
+    return res.status(401).json({
+      message: 'Unauthorized',
+    });
+  }
+});
+
 googleAuthRouter.get(
   '',
   passport.authenticate('google', {
@@ -18,18 +30,15 @@ googleAuthRouter.get(
 
 googleAuthRouter.get('/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
   const user: User = req.user as User;
+
   const token = signToken(user);
-  delete user.firstname;
-  delete user.lastname;
-  delete user.password;
-  delete user.email;
-  delete user.googleId;
-  delete user.facebookId;
   const refreshTokenModel = new RefreshToken();
   const refreshToken = uuid4();
   refreshTokenModel.refreshToken = refreshToken;
   refreshTokenModel.user = user;
+
   return res
+
     .status(200)
     .cookie('accessToken', token, {
       httpOnly: false,

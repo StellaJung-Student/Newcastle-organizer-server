@@ -13,7 +13,6 @@ describe('Test IndexController', () => {
     const result = await request(app).get('/whatEverRoute').send();
 
     expect(result.status).toBe(404);
-    console.log(result.body);
     expect(result.body.message).toBe('Nothing here!');
   });
 });

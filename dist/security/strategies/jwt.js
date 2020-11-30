@@ -151,7 +151,6 @@ var strategy = function () {
                 _a.label = 1;
               case 1:
                 _a.trys.push([1, 3, , 4]);
-                console.log(jwt_payload.data.id);
                 return [
                   4 /*yield*/,
                   userRepository.findOne({

@@ -150,9 +150,13 @@ var ProjectController = /** @class */ (function () {
             return [
               4 /*yield*/,
               projectRepository.find({
-                where: {
-                  owner: req.user,
-                },
+                //Get relation members, owner
+                relations: ['members', 'owner'],
+                where: [
+                  {
+                    owner: req.user,
+                  },
+                ],
               }),
             ];
           case 2:
@@ -254,6 +258,11 @@ var ProjectController = /** @class */ (function () {
       });
     });
   };
+  /**
+   * Save project
+   * @param req request data (json)
+   * @param res response (json)
+   */
   ProjectController.saveProject = function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
       var projectRepository,
@@ -297,6 +306,7 @@ var ProjectController = /** @class */ (function () {
           case 2:
             project = _g.sent();
             //await userRepository.save(user);
+            console.log(project);
             return [
               2 /*return*/,
               res.status(201).send({

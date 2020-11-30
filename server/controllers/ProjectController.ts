@@ -11,12 +11,16 @@ export default class ProjectController {
    */
   static async findAllProjectsOfUser(req: Request, res: Response): Promise<Response> {
     const projectRepository = getRepository(Project);
-
+    console.log(req.user);
     try {
       const projects = await projectRepository.find({
-        where: {
-          owner: req.user as User,
-        },
+        //Get relation members, owner
+        relations: ['owner'],
+        where: [
+          {
+            owner: req.user as User,
+          },
+        ],
       });
       if (projects.length === 0) {
         return res.status(200).json([]);
@@ -77,6 +81,11 @@ export default class ProjectController {
     }
   }
 
+  /**
+   * Save project
+   * @param req request data (json)
+   * @param res response (json)
+   */
   static async saveProject(req: Request, res: Response): Promise<Response> {
     const projectRepository = getRepository(Project);
     const { title = '', description = '', imageUrl = '', publicStatus = true, tags = [] } = req.body;
@@ -87,6 +96,7 @@ export default class ProjectController {
     try {
       project = await projectRepository.save(project);
       //await userRepository.save(user);
+      console.log(project);
       return res.status(201).send({
         id: project.id,
       });

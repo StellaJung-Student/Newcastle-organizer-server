@@ -34,13 +34,17 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ['https://newcastle-organizer.vercel.app', 'http://localhost:3000'],
+    origin: true,
+    //origin: ['https://newcastle-organizer.vercel.app', 'http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   })
 );
 
 app.use(passport.initialize());
+
+// deserialize cookie from the browser
+app.use(passport.session());
 
 /**
  * Dummy route

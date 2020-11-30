@@ -15,7 +15,6 @@ const strategy = () => {
         const userRepository = getRepository(User);
         // usually this would be a database call:
         try {
-          console.log(jwt_payload.data.id);
           const user = await userRepository.findOne({
             where: {
               id: jwt_payload.data.id,

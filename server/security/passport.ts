@@ -13,15 +13,15 @@ passport.serializeUser(function (user, done) {
   done(null, user);
 });
 
-passport.deserializeUser(async function (id, done) {
+passport.deserializeUser(async function (user: User, done) {
   const userRepository = getRepository(User);
   try {
-    const user = await userRepository.findOne({
+    const userModel = await userRepository.findOne({
       where: {
-        id,
+        id: user.id,
       },
     });
-    done(null, user);
+    done(null, userModel);
   } catch (e) {
     done(e, null);
   }

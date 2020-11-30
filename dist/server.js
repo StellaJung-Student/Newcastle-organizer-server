@@ -142,7 +142,7 @@ typeorm_1
     password: baseConfig_1.AWS_RDS_PASSWORD,
     database: baseConfig_1.AWS_RDS_INIT_DB,
     synchronize: true,
-    logging: true,
+    logging: false,
     entities: [baseConfig_1.DB_ENTITIES],
     migrations: [baseConfig_1.DB_MIGRATIONS],
     subscribers: [baseConfig_1.DB_SUBSCRIBERS],

@@ -140,9 +140,9 @@ jwt_1.strategy();
 passport_1.default.serializeUser(function (user, done) {
   done(null, user);
 });
-passport_1.default.deserializeUser(function (id, done) {
+passport_1.default.deserializeUser(function (user, done) {
   return __awaiter(this, void 0, void 0, function () {
-    var userRepository, user, e_1;
+    var userRepository, userModel, e_1;
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
@@ -154,13 +154,13 @@ passport_1.default.deserializeUser(function (id, done) {
             4 /*yield*/,
             userRepository.findOne({
               where: {
-                id: id,
+                id: user.id,
               },
             }),
           ];
         case 2:
-          user = _a.sent();
-          done(null, user);
+          userModel = _a.sent();
+          done(null, userModel);
           return [3 /*break*/, 4];
         case 3:
           e_1 = _a.sent();

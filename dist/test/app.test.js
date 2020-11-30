@@ -157,7 +157,6 @@ describe('Test IndexController', function () {
           case 1:
             result = _a.sent();
             expect(result.status).toBe(404);
-            console.log(result.body);
             expect(result.body.message).toBe('Nothing here!');
             return [2 /*return*/];
         }

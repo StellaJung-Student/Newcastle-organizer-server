@@ -144,15 +144,20 @@ var ProjectController = /** @class */ (function () {
         switch (_a.label) {
           case 0:
             projectRepository = typeorm_1.getRepository(Project_1.default);
+            console.log(req.user);
             _a.label = 1;
           case 1:
             _a.trys.push([1, 3, , 4]);
             return [
               4 /*yield*/,
               projectRepository.find({
-                where: {
-                  owner: req.user,
-                },
+                //Get relation members, owner
+                relations: ['owner'],
+                where: [
+                  {
+                    owner: req.user,
+                  },
+                ],
               }),
             ];
           case 2:
@@ -254,6 +259,11 @@ var ProjectController = /** @class */ (function () {
       });
     });
   };
+  /**
+   * Save project
+   * @param req request data (json)
+   * @param res response (json)
+   */
   ProjectController.saveProject = function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
       var projectRepository,
@@ -297,6 +307,7 @@ var ProjectController = /** @class */ (function () {
           case 2:
             project = _g.sent();
             //await userRepository.save(user);
+            console.log(project);
             return [
               2 /*return*/,
               res.status(201).send({

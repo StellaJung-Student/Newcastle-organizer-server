@@ -134,6 +134,19 @@ var jwt_1 = require('../../helpers/jwt');
 var RefreshToken_1 = __importDefault(require('../../models/RefreshToken'));
 var uuid_1 = require('uuid');
 var googleAuthRouter = express_1.Router();
+var CLIENT_URL =
+  //'http://localhost:3000/boards';
+  'https://newcastle-organizer.vercel.app/boards';
+googleAuthRouter.get('/success', function (req, res, next) {
+  if (req.user) {
+    var user = req.user;
+    return res.status(200).json(user);
+  } else {
+    return res.status(401).json({
+      message: 'Unauthorized',
+    });
+  }
+});
 googleAuthRouter.get(
   '',
   passport_1.default.authenticate('google', {
@@ -146,12 +159,6 @@ googleAuthRouter.get('/callback', passport_1.default.authenticate('google', { fa
 ) {
   var user = req.user;
   var token = jwt_1.signToken(user);
-  delete user.firstname;
-  delete user.lastname;
-  delete user.password;
-  delete user.email;
-  delete user.googleId;
-  delete user.facebookId;
   var refreshTokenModel = new RefreshToken_1.default();
   var refreshToken = uuid_1.v4();
   refreshTokenModel.refreshToken = refreshToken;
@@ -159,15 +166,15 @@ googleAuthRouter.get('/callback', passport_1.default.authenticate('google', { fa
   return res
     .status(200)
     .cookie('accessToken', token, {
-      //httpOnly: true,
+      httpOnly: false,
     })
     .cookie('user', user, {
-      //httpOnly: true,
+      httpOnly: false,
     })
     .cookie('refreshToken', refreshToken, {
       httpOnly: true,
     })
-    .redirect('http://localhost:3000/');
+    .redirect(CLIENT_URL);
 });
 googleAuthRouter.get('/logout', function (req, res) {
   return __awaiter(void 0, void 0, void 0, function () {

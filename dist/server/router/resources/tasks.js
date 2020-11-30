@@ -7,20 +7,21 @@ var __importDefault =
 Object.defineProperty(exports, '__esModule', { value: true });
 var express_1 = require('express');
 var TaskController_1 = __importDefault(require('../../controllers/TaskController'));
+var passport_1 = __importDefault(require('passport'));
 var TaskRouter = express_1.Router();
 TaskRouter.get(
   '/projectLists/:projectListId/tasks/:taskId',
-  //passport.authenticate('jwt', { session: false }),
+  passport_1.default.authenticate('jwt', { session: false }),
   TaskController_1.default.findTaskById
 );
 TaskRouter.post(
   '/projectLists/:projectListId/tasks',
-  //passport.authenticate('jwt', { session: false }),
+  passport_1.default.authenticate('jwt', { session: false }),
   TaskController_1.default.saveTask
 );
 TaskRouter.patch(
   '/projectLists/:projectListId/tasks',
-  //passport.authenticate('jwt', { session: false }),
+  passport_1.default.authenticate('jwt', { session: false }),
   TaskController_1.default.updateTaskByProjectId
 );
 TaskRouter.delete(

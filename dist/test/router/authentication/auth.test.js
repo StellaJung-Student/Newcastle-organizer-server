@@ -122,64 +122,102 @@ var __generator =
       return { value: op[0] ? op[1] : void 0, done: true };
     }
   };
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 Object.defineProperty(exports, '__esModule', { value: true });
-require('dotenv/config');
-var typeorm_1 = require('typeorm');
-var connection = {
-  create: function () {
-    return __awaiter(this, void 0, void 0, function () {
+var supertest_1 = __importDefault(require('supertest'));
+var database_1 = __importDefault(require('../../db/database'));
+var app_1 = __importDefault(require('../../../server/app'));
+beforeAll(function () {
+  return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+      switch (_a.label) {
+        case 0:
+          return [4 /*yield*/, database_1.default.create()];
+        case 1:
+          _a.sent();
+          return [4 /*yield*/, database_1.default.clear()];
+        case 2:
+          _a.sent();
+          return [2 /*return*/];
+      }
+    });
+  });
+});
+afterAll(function () {
+  return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+      switch (_a.label) {
+        case 0:
+          return [4 /*yield*/, database_1.default.clear()];
+        case 1:
+          _a.sent();
+          return [4 /*yield*/, database_1.default.close()];
+        case 2:
+          _a.sent();
+          return [2 /*return*/];
+      }
+    });
+  });
+});
+beforeEach(function () {
+  return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+      switch (_a.label) {
+        case 0:
+          return [4 /*yield*/, database_1.default.clear()];
+        case 1:
+          _a.sent();
+          return [2 /*return*/];
+      }
+    });
+  });
+});
+describe('Test authentication route', function () {
+  it('Request /api/auth/signup should return status 201 if having email and password with length > 5', function () {
+    return __awaiter(void 0, void 0, void 0, function () {
+      var result;
       return __generator(this, function (_a) {
         switch (_a.label) {
           case 0:
-            return [4 /*yield*/, typeorm_1.createConnection()];
+            return [
+              4 /*yield*/,
+              supertest_1.default(app_1.default).post('/api/auth/signup').send({
+                email: 'test@gmail.com',
+                password: 'test123',
+              }),
+            ];
           case 1:
-            _a.sent();
+            result = _a.sent();
+            expect(result.status).toBe(201);
             return [2 /*return*/];
         }
       });
     });
-  },
-  close: function () {
-    return __awaiter(this, void 0, void 0, function () {
+  });
+  it('Request /api/auth/signup should return status 500 if having email and password with length < 5', function () {
+    return __awaiter(void 0, void 0, void 0, function () {
+      var result;
       return __generator(this, function (_a) {
         switch (_a.label) {
           case 0:
-            return [4 /*yield*/, typeorm_1.getConnection().close()];
+            return [
+              4 /*yield*/,
+              supertest_1.default(app_1.default).post('/api/auth/signup').send({
+                email: 'test@gmail.com',
+                password: 'test',
+              }),
+            ];
           case 1:
-            _a.sent();
+            result = _a.sent();
+            expect(result.status).toBe(500);
             return [2 /*return*/];
         }
       });
     });
-  },
-  clear: function () {
-    return __awaiter(this, void 0, void 0, function () {
-      var connection, entities, _i, entities_1, entity, repository;
-      return __generator(this, function (_a) {
-        switch (_a.label) {
-          case 0:
-            connection = typeorm_1.getConnection();
-            entities = connection.entityMetadatas;
-            (_i = 0), (entities_1 = entities);
-            _a.label = 1;
-          case 1:
-            if (!(_i < entities_1.length)) return [3 /*break*/, 4];
-            entity = entities_1[_i];
-            if (!(entity.tableName !== 'user')) return [3 /*break*/, 3];
-            repository = connection.getRepository(entity.name);
-            return [4 /*yield*/, repository.query('DELETE FROM ' + entity.tableName)];
-          case 2:
-            _a.sent();
-            _a.label = 3;
-          case 3:
-            _i++;
-            return [3 /*break*/, 1];
-          case 4:
-            return [2 /*return*/];
-        }
-      });
-    });
-  },
-};
-exports.default = connection;
-//# sourceMappingURL=database.js.map
+  });
+});
+//# sourceMappingURL=auth.test.js.map

@@ -105,4 +105,4 @@ typings/
 .tern-port
 
 #orm config
-ormconfig.json
+ormconfig.js

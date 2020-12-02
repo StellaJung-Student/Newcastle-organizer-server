@@ -122,64 +122,96 @@ var __generator =
       return { value: op[0] ? op[1] : void 0, done: true };
     }
   };
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 Object.defineProperty(exports, '__esModule', { value: true });
-require('dotenv/config');
+var supertest_1 = __importDefault(require('supertest'));
 var typeorm_1 = require('typeorm');
-var connection = {
-  create: function () {
-    return __awaiter(this, void 0, void 0, function () {
+var database_1 = __importDefault(require('../../../db/database'));
+var Project_1 = __importDefault(require('../../../../server/models/Project'));
+var app_1 = __importDefault(require('../../../../server/app'));
+beforeAll(function () {
+  return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+      switch (_a.label) {
+        case 0:
+          return [4 /*yield*/, database_1.default.create()];
+        case 1:
+          _a.sent();
+          return [4 /*yield*/, database_1.default.clear()];
+        case 2:
+          _a.sent();
+          return [2 /*return*/];
+      }
+    });
+  });
+});
+afterAll(function () {
+  return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+      switch (_a.label) {
+        case 0:
+          return [4 /*yield*/, database_1.default.close()];
+        case 1:
+          _a.sent();
+          return [2 /*return*/];
+      }
+    });
+  });
+});
+beforeEach(function () {
+  return __awaiter(void 0, void 0, void 0, function () {
+    var project1, project2, project3;
+    return __generator(this, function (_a) {
+      switch (_a.label) {
+        case 0:
+          return [4 /*yield*/, database_1.default.clear()];
+        case 1:
+          _a.sent();
+          project1 = new Project_1.default('test1', 'test1', 'test1', true, []);
+          project1.id = 1;
+          project2 = new Project_1.default('test2', 'test2', 'test2', false, []);
+          project1.id = 2;
+          project3 = new Project_1.default('test3', 'test3', 'test3', true, []);
+          project1.id = 3;
+          return [4 /*yield*/, typeorm_1.getRepository(Project_1.default).save(project1)];
+        case 2:
+          _a.sent();
+          return [4 /*yield*/, typeorm_1.getRepository(Project_1.default).save(project2)];
+        case 3:
+          _a.sent();
+          return [4 /*yield*/, typeorm_1.getRepository(Project_1.default).save(project3)];
+        case 4:
+          _a.sent();
+          return [2 /*return*/];
+      }
+    });
+  });
+});
+describe('Test user projects controller', function () {
+  it('Request /api/user/projects without authentication should result ok', function () {
+    return __awaiter(void 0, void 0, void 0, function () {
+      var result;
       return __generator(this, function (_a) {
         switch (_a.label) {
           case 0:
-            return [4 /*yield*/, typeorm_1.createConnection()];
+            return [
+              4 /*yield*/,
+              supertest_1.default(app_1.default).get('/api/user/projects').send({
+                username: 'test@gmail.com',
+                password: 'test',
+              }),
+            ];
           case 1:
-            _a.sent();
+            result = _a.sent();
+            expect(401).toBe(401);
             return [2 /*return*/];
         }
       });
     });
-  },
-  close: function () {
-    return __awaiter(this, void 0, void 0, function () {
-      return __generator(this, function (_a) {
-        switch (_a.label) {
-          case 0:
-            return [4 /*yield*/, typeorm_1.getConnection().close()];
-          case 1:
-            _a.sent();
-            return [2 /*return*/];
-        }
-      });
-    });
-  },
-  clear: function () {
-    return __awaiter(this, void 0, void 0, function () {
-      var connection, entities, _i, entities_1, entity, repository;
-      return __generator(this, function (_a) {
-        switch (_a.label) {
-          case 0:
-            connection = typeorm_1.getConnection();
-            entities = connection.entityMetadatas;
-            (_i = 0), (entities_1 = entities);
-            _a.label = 1;
-          case 1:
-            if (!(_i < entities_1.length)) return [3 /*break*/, 4];
-            entity = entities_1[_i];
-            if (!(entity.tableName !== 'user')) return [3 /*break*/, 3];
-            repository = connection.getRepository(entity.name);
-            return [4 /*yield*/, repository.query('DELETE FROM ' + entity.tableName)];
-          case 2:
-            _a.sent();
-            _a.label = 3;
-          case 3:
-            _i++;
-            return [3 /*break*/, 1];
-          case 4:
-            return [2 /*return*/];
-        }
-      });
-    });
-  },
-};
-exports.default = connection;
-//# sourceMappingURL=database.js.map
+  });
+});
+//# sourceMappingURL=projects.test.js.map

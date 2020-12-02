@@ -6,6 +6,9 @@ import { signToken } from '../helpers/jwt';
 import { v4 as uuidv4 } from 'uuid';
 import RefreshToken from '../models/RefreshToken';
 
+/**
+ * Basic authentication controller
+ */
 export default class AuthController {
   /**
    * User sign up
@@ -59,10 +62,7 @@ export default class AuthController {
         // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
         //const payload = {id: user.id};
         const token = signToken(user);
-        delete user.firstname;
-        delete user.lastname;
         delete user.password;
-        delete user.email;
         delete user.googleId;
         delete user.facebookId;
         const refreshTokenModel = new RefreshToken();

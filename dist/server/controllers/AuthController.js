@@ -134,6 +134,9 @@ var bcrypt_1 = require('../helpers/bcrypt');
 var jwt_1 = require('../helpers/jwt');
 var uuid_1 = require('uuid');
 var RefreshToken_1 = __importDefault(require('../models/RefreshToken'));
+/**
+ * Basic authentication controller
+ */
 var AuthController = /** @class */ (function () {
   function AuthController() {}
   /**
@@ -222,10 +225,7 @@ var AuthController = /** @class */ (function () {
             isPasswordMatched = _b.sent();
             if (!isPasswordMatched) return [3 /*break*/, 5];
             token = jwt_1.signToken(user);
-            delete user.firstname;
-            delete user.lastname;
             delete user.password;
-            delete user.email;
             delete user.googleId;
             delete user.facebookId;
             refreshTokenModel = new RefreshToken_1.default();

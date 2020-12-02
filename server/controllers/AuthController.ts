@@ -1,14 +1,11 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { getRepository, getTreeRepository, Repository } from 'typeorm';
 import User from '../models/User';
 import { comparePassword, hashPassword } from '../helpers/bcrypt';
 import { signToken } from '../helpers/jwt';
 import { v4 as uuidv4 } from 'uuid';
 import RefreshToken from '../models/RefreshToken';
 
-/**
- * Basic authentication controller
- */
 export default class AuthController {
   /**
    * User sign up
@@ -29,17 +26,37 @@ export default class AuthController {
     }
     //Insert the user
     const userRepository = getRepository(User);
+
+    // Insert Verification token
+    const verificationRepository = getRepository(SignupVerificationToken);
+
     try {
       //Hash password before inserting to database
       const hashedPassword = await hashPassword(password);
       await userRepository.save(new User(email, hashedPassword, firstname, lastname, username, null, null));
-      res.status(201).json({
-        message: 'Account created',
-      });
+      // initialize the tokengenerator
+      const tokgen = new TokenGenerator();
+      // generate a unique token
+      const token = tokgen.generate();
+      // create a new instance of nodemailer class
+      const mailer = new MailService();
+      // call the sendVerificationEmail function and pass email and the token
+      mailer.sendVerificationEmail(email, token);
+
+      const user = await userRepository.findOne({ email });
+
+      const verification = new SignupVerificationToken();
+      verification.token = token;
+      verification.user = user;
+      await verificationRepository.save(verification);
     } catch (e) {
       console.log(e);
       res.status(500).json(e);
     }
+
+    res.status(201).json({
+      message: 'Account created',
+    });
   };
 
   /**

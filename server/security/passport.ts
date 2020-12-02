@@ -21,6 +21,9 @@ passport.deserializeUser(async function (user: User, done) {
         id: user.id,
       },
     });
+    if (!userModel) {
+      done(null, false);
+    }
     done(null, userModel);
   } catch (e) {
     done(e, null);

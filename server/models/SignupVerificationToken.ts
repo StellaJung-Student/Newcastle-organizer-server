@@ -7,7 +7,10 @@ export default class SignupVerificationToken {
   id: number;
 
   @Column()
-  token: String;
+  token: string;
+
+  @Column({ type: 'date' })
+  expiredDate: Date;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })

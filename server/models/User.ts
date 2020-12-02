@@ -31,13 +31,13 @@ export default class Users {
   projects: Project[];
 
   @Column({ default: false })
-  isEnabled: Boolean;
+  isEnabled: boolean;
 
   @Column({ default: false })
-  isAccountExpired: Boolean;
+  isAccountExpired: boolean;
 
   @Column({ default: false })
-  isBanned: Boolean;
+  isBanned: boolean;
 
   constructor(
     email: string,
@@ -47,9 +47,6 @@ export default class Users {
     username: string,
     googleId: string,
     facebookId: string
-    // isEnabled: Boolean,
-    // isAccountExpired: Boolean,
-    // isBanned: Boolean
   ) {
     this.email = email;
     this.password = password;
@@ -58,8 +55,5 @@ export default class Users {
     this.username = username;
     this.googleId = googleId;
     this.facebookId = facebookId;
-    // this.isEnabled = isEnabled;
-    // this.isAccountExpired = isAccountExpired;
-    // this.isBanned = isBanned;
   }
 }

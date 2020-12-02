@@ -1,10 +1,13 @@
 import { Request, Response } from 'express';
-import { getRepository, getTreeRepository, Repository } from 'typeorm';
+import { getRepository, MoreThan } from 'typeorm';
 import User from '../models/User';
 import { comparePassword, hashPassword } from '../helpers/bcrypt';
 import { signToken } from '../helpers/jwt';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuid4 } from 'uuid';
 import RefreshToken from '../models/RefreshToken';
+import SignupVerificationToken from '../models/SignupVerificationToken';
+import { TokenGenerator } from 'ts-token-generator';
+import MailService from '../services/MailService';
 
 export default class AuthController {
   /**
@@ -33,30 +36,74 @@ export default class AuthController {
     try {
       //Hash password before inserting to database
       const hashedPassword = await hashPassword(password);
-      await userRepository.save(new User(email, hashedPassword, firstname, lastname, username, null, null));
-      // initialize the tokengenerator
-      const tokgen = new TokenGenerator();
+
+      const user = new User(email, hashedPassword, firstname, lastname, username, null, null);
+
+      user.isAccountExpired = false;
+      user.isBanned = false;
+      user.isEnabled = false;
+      await userRepository.save(user);
+
+      // initialize the token generator
+      const tokenGenerator = new TokenGenerator();
       // generate a unique token
-      const token = tokgen.generate();
+      const token = tokenGenerator.generate();
       // create a new instance of nodemailer class
       const mailer = new MailService();
       // call the sendVerificationEmail function and pass email and the token
-      mailer.sendVerificationEmail(email, token);
-
-      const user = await userRepository.findOne({ email });
+      await mailer.sendVerificationEmail(email, token);
 
       const verification = new SignupVerificationToken();
       verification.token = token;
       verification.user = user;
+      const currentDate = new Date();
+      currentDate.setDate(currentDate.getDate() + 3);
+      verification.expiredDate = currentDate;
       await verificationRepository.save(verification);
+
+      res.status(201).json({
+        message: 'Account created',
+      });
     } catch (e) {
       console.log(e);
       res.status(500).json(e);
     }
+  };
 
-    res.status(201).json({
-      message: 'Account created',
-    });
+  /**
+   *
+   * @param req
+   * @param res
+   */
+  static verifySignupToken = async (req: Request, res: Response): Promise<Response> => {
+    const { token } = req.params;
+
+    try {
+      const verificationToken = await getRepository(SignupVerificationToken).findOne({
+        relations: ['user'],
+        where: {
+          token: token,
+          expiredDate: MoreThan(new Date()),
+        },
+      });
+
+      if (!verificationToken) {
+        return res.status(401).json({ message: 'Verification code expired' });
+      }
+
+      const user = verificationToken.user;
+
+      user.isEnabled = true;
+
+      await getRepository(User).save(user);
+
+      await getRepository(SignupVerificationToken).delete(verificationToken);
+
+      return res.status(200).json({ message: 'Account created' });
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json(e);
+    }
   };
 
   /**
@@ -76,14 +123,17 @@ export default class AuthController {
     try {
       const isPasswordMatched = await comparePassword(password, user.password);
       if (isPasswordMatched) {
+        if (!user.isEnabled && user.isBanned && user.isAccountExpired) {
+          res.status(401).json({
+            message: 'Account is not enabled or is banned or expired',
+          });
+        }
         // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
         //const payload = {id: user.id};
         const token = signToken(user);
         delete user.password;
-        delete user.googleId;
-        delete user.facebookId;
         const refreshTokenModel = new RefreshToken();
-        const refreshToken = uuidv4();
+        const refreshToken = uuid4();
         refreshTokenModel.refreshToken = refreshToken;
         refreshTokenModel.user = user;
         await getRepository(RefreshToken).save(refreshTokenModel);

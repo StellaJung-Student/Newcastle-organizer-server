@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import Project from './Project';
 
 @Entity()
-export default class User {
+export default class Users {
   @PrimaryGeneratedColumn()
   id: string;
 
@@ -30,6 +30,15 @@ export default class User {
   @OneToMany((type) => Project, (project) => project.owner)
   projects: Project[];
 
+  @Column({ default: false })
+  isEnabled: Boolean;
+
+  @Column({ default: false })
+  isAccountExpired: Boolean;
+
+  @Column({ default: false })
+  isBanned: Boolean;
+
   constructor(
     email: string,
     password: string,
@@ -38,6 +47,9 @@ export default class User {
     username: string,
     googleId: string,
     facebookId: string
+    // isEnabled: Boolean,
+    // isAccountExpired: Boolean,
+    // isBanned: Boolean
   ) {
     this.email = email;
     this.password = password;
@@ -46,5 +58,8 @@ export default class User {
     this.username = username;
     this.googleId = googleId;
     this.facebookId = facebookId;
+    // this.isEnabled = isEnabled;
+    // this.isAccountExpired = isAccountExpired;
+    // this.isBanned = isBanned;
   }
 }

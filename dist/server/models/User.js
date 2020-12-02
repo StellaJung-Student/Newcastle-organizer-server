@@ -26,7 +26,18 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var typeorm_1 = require('typeorm');
 var Project_1 = __importDefault(require('./Project'));
 var User = /** @class */ (function () {
-  function User(email, password, firstname, lastname, username, googleId, facebookId) {
+  function User(
+    email,
+    password,
+    firstname,
+    lastname,
+    username,
+    googleId,
+    facebookId
+    // isEnabled: Boolean,
+    // isAccountExpired: Boolean,
+    // isBanned: Boolean
+  ) {
     this.email = email;
     this.password = password;
     this.firstname = firstname;
@@ -34,6 +45,9 @@ var User = /** @class */ (function () {
     this.username = username;
     this.googleId = googleId;
     this.facebookId = facebookId;
+    // this.isEnabled = isEnabled;
+    // this.isAccountExpired = isAccountExpired;
+    // this.isBanned = isBanned;
   }
   __decorate([typeorm_1.PrimaryGeneratedColumn(), __metadata('design:type', String)], User.prototype, 'id', void 0);
   __decorate([typeorm_1.Column({ unique: true }), __metadata('design:type', String)], User.prototype, 'email', void 0);
@@ -67,6 +81,24 @@ var User = /** @class */ (function () {
     ],
     User.prototype,
     'projects',
+    void 0
+  );
+  __decorate(
+    [typeorm_1.Column({ default: false }), __metadata('design:type', Boolean)],
+    User.prototype,
+    'isEnabled',
+    void 0
+  );
+  __decorate(
+    [typeorm_1.Column({ default: false }), __metadata('design:type', Boolean)],
+    User.prototype,
+    'isAccountExpired',
+    void 0
+  );
+  __decorate(
+    [typeorm_1.Column({ default: false }), __metadata('design:type', Boolean)],
+    User.prototype,
+    'isBanned',
     void 0
   );
   User = __decorate(

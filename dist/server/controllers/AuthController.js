@@ -134,6 +134,7 @@ var bcrypt_1 = require('../helpers/bcrypt');
 var jwt_1 = require('../helpers/jwt');
 var uuid_1 = require('uuid');
 var RefreshToken_1 = __importDefault(require('../models/RefreshToken'));
+var ts_token_generator_1 = require('ts-token-generator');
 var AuthController = /** @class */ (function () {
   function AuthController() {}
   /**
@@ -143,10 +144,25 @@ var AuthController = /** @class */ (function () {
    */
   AuthController.signUp = function (req, res) {
     return __awaiter(void 0, void 0, void 0, function () {
-      var _a, _b, firstname, _c, lastname, _d, username, email, password, userRepository, hashedPassword, e_1;
+      var tokgen,
+        token,
+        _a,
+        _b,
+        firstname,
+        _c,
+        lastname,
+        _d,
+        username,
+        email,
+        password,
+        userRepository,
+        hashedPassword,
+        e_1;
       return __generator(this, function (_e) {
         switch (_e.label) {
           case 0:
+            tokgen = new ts_token_generator_1.TokenGenerator();
+            token = tokgen.generate();
             (_a = req.body),
               (_b = _a.firstname),
               (firstname = _b === void 0 ? '' : _b),

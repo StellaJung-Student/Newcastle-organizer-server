@@ -34,6 +34,12 @@ var SignupVerificationToken = /** @class */ (function () {
     void 0
   );
   __decorate(
+    [typeorm_1.Column(), __metadata('design:type', String)],
+    SignupVerificationToken.prototype,
+    'token',
+    void 0
+  );
+  __decorate(
     [
       typeorm_1.ManyToOne(function () {
         return User_1.default;
@@ -43,12 +49,6 @@ var SignupVerificationToken = /** @class */ (function () {
     ],
     SignupVerificationToken.prototype,
     'user',
-    void 0
-  );
-  __decorate(
-    [typeorm_1.Column(), __metadata('design:type', String)],
-    SignupVerificationToken.prototype,
-    'code',
     void 0
   );
   SignupVerificationToken = __decorate([typeorm_1.Entity()], SignupVerificationToken);

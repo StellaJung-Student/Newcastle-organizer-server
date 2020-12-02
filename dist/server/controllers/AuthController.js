@@ -134,7 +134,9 @@ var bcrypt_1 = require('../helpers/bcrypt');
 var jwt_1 = require('../helpers/jwt');
 var uuid_1 = require('uuid');
 var RefreshToken_1 = __importDefault(require('../models/RefreshToken'));
+var SignupVerificationToken_1 = __importDefault(require('./../models/SignupVerificationToken'));
 var ts_token_generator_1 = require('ts-token-generator');
+var MailService_1 = __importDefault(require('./../services/MailService'));
 var AuthController = /** @class */ (function () {
   function AuthController() {}
   /**
@@ -144,9 +146,7 @@ var AuthController = /** @class */ (function () {
    */
   AuthController.signUp = function (req, res) {
     return __awaiter(void 0, void 0, void 0, function () {
-      var tokgen,
-        token,
-        _a,
+      var _a,
         _b,
         firstname,
         _c,
@@ -156,13 +156,17 @@ var AuthController = /** @class */ (function () {
         email,
         password,
         userRepository,
+        verificationRepository,
         hashedPassword,
+        tokgen,
+        token,
+        mailer,
+        user,
+        verification,
         e_1;
       return __generator(this, function (_e) {
         switch (_e.label) {
           case 0:
-            tokgen = new ts_token_generator_1.TokenGenerator();
-            token = tokgen.generate();
             (_a = req.body),
               (_b = _a.firstname),
               (firstname = _b === void 0 ? '' : _b),
@@ -185,9 +189,10 @@ var AuthController = /** @class */ (function () {
               ];
             }
             userRepository = typeorm_1.getRepository(User_1.default);
+            verificationRepository = typeorm_1.getRepository(SignupVerificationToken_1.default);
             _e.label = 1;
           case 1:
-            _e.trys.push([1, 4, , 5]);
+            _e.trys.push([1, 6, , 7]);
             return [4 /*yield*/, bcrypt_1.hashPassword(password)];
           case 2:
             hashedPassword = _e.sent();
@@ -197,16 +202,30 @@ var AuthController = /** @class */ (function () {
             ];
           case 3:
             _e.sent();
-            res.status(201).json({
-              message: 'Account created',
-            });
-            return [3 /*break*/, 5];
+            tokgen = new ts_token_generator_1.TokenGenerator();
+            token = tokgen.generate();
+            mailer = new MailService_1.default();
+            // call the sendVerificationEmail function and pass email and the token
+            mailer.sendVerificationEmail(email, token);
+            return [4 /*yield*/, userRepository.findOne({ email: email })];
           case 4:
+            user = _e.sent();
+            verification = new SignupVerificationToken_1.default();
+            verification.token = token;
+            verification.user = user;
+            return [4 /*yield*/, verificationRepository.save(verification)];
+          case 5:
+            _e.sent();
+            return [3 /*break*/, 7];
+          case 6:
             e_1 = _e.sent();
             console.log(e_1);
             res.status(500).json(e_1);
-            return [3 /*break*/, 5];
-          case 5:
+            return [3 /*break*/, 7];
+          case 7:
+            res.status(201).json({
+              message: 'Account created',
+            });
             return [2 /*return*/];
         }
       });

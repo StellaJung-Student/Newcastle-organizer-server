@@ -25,8 +25,8 @@ var __importDefault =
 Object.defineProperty(exports, '__esModule', { value: true });
 var typeorm_1 = require('typeorm');
 var Project_1 = __importDefault(require('./Project'));
-var User = /** @class */ (function () {
-  function User(
+var Users = /** @class */ (function () {
+  function Users(
     email,
     password,
     firstname,
@@ -49,21 +49,21 @@ var User = /** @class */ (function () {
     // this.isAccountExpired = isAccountExpired;
     // this.isBanned = isBanned;
   }
-  __decorate([typeorm_1.PrimaryGeneratedColumn(), __metadata('design:type', String)], User.prototype, 'id', void 0);
-  __decorate([typeorm_1.Column({ unique: true }), __metadata('design:type', String)], User.prototype, 'email', void 0);
-  __decorate([typeorm_1.Column(), __metadata('design:type', String)], User.prototype, 'password', void 0);
-  __decorate([typeorm_1.Column(), __metadata('design:type', String)], User.prototype, 'firstname', void 0);
-  __decorate([typeorm_1.Column(), __metadata('design:type', String)], User.prototype, 'lastname', void 0);
-  __decorate([typeorm_1.Column(), __metadata('design:type', String)], User.prototype, 'username', void 0);
+  __decorate([typeorm_1.PrimaryGeneratedColumn(), __metadata('design:type', String)], Users.prototype, 'id', void 0);
+  __decorate([typeorm_1.Column({ unique: true }), __metadata('design:type', String)], Users.prototype, 'email', void 0);
+  __decorate([typeorm_1.Column(), __metadata('design:type', String)], Users.prototype, 'password', void 0);
+  __decorate([typeorm_1.Column(), __metadata('design:type', String)], Users.prototype, 'firstname', void 0);
+  __decorate([typeorm_1.Column(), __metadata('design:type', String)], Users.prototype, 'lastname', void 0);
+  __decorate([typeorm_1.Column(), __metadata('design:type', String)], Users.prototype, 'username', void 0);
   __decorate(
     [typeorm_1.Column({ nullable: true }), __metadata('design:type', String)],
-    User.prototype,
+    Users.prototype,
     'googleId',
     void 0
   );
   __decorate(
     [typeorm_1.Column({ nullable: true }), __metadata('design:type', String)],
-    User.prototype,
+    Users.prototype,
     'facebookId',
     void 0
   );
@@ -79,33 +79,33 @@ var User = /** @class */ (function () {
       ),
       __metadata('design:type', Array),
     ],
-    User.prototype,
+    Users.prototype,
     'projects',
     void 0
   );
   __decorate(
     [typeorm_1.Column({ default: false }), __metadata('design:type', Boolean)],
-    User.prototype,
+    Users.prototype,
     'isEnabled',
     void 0
   );
   __decorate(
     [typeorm_1.Column({ default: false }), __metadata('design:type', Boolean)],
-    User.prototype,
+    Users.prototype,
     'isAccountExpired',
     void 0
   );
   __decorate(
     [typeorm_1.Column({ default: false }), __metadata('design:type', Boolean)],
-    User.prototype,
+    Users.prototype,
     'isBanned',
     void 0
   );
-  User = __decorate(
+  Users = __decorate(
     [typeorm_1.Entity(), __metadata('design:paramtypes', [String, String, String, String, String, String, String])],
-    User
+    Users
   );
-  return User;
+  return Users;
 })();
-exports.default = User;
+exports.default = Users;
 //# sourceMappingURL=User.js.map

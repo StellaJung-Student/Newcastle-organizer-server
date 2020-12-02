@@ -1,12 +1,14 @@
 import nodemailer from 'nodemailer';
 
+import { NODEMAILER_EMAIL, NODEMAILER_PASSWORD } from './../configs/baseConfig';
+
 export default class MailService {
   sendVerificationEmail(email: string, token: string): void {
     let mailTransporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'prayamajhi85@gmail.com',
-        pass: '9840168144',
+        user: NODEMAILER_EMAIL,
+        pass: NODEMAILER_PASSWORD,
       },
     });
 

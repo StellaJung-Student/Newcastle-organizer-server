@@ -123,7 +123,7 @@ export default class AuthController {
     try {
       const isPasswordMatched = await comparePassword(password, user.password);
       if (isPasswordMatched) {
-        if (!user.isEnabled && user.isBanned && user.isAccountExpired) {
+        if (!user.isEnabled || user.isBanned || user.isAccountExpired) {
           return res.status(401).json({
             message: 'Account is not enabled or is banned or expired',
           });

@@ -6,8 +6,8 @@ import RefreshToken from '../../models/RefreshToken';
 import { v4 as uuid4 } from 'uuid';
 
 const googleAuthRouter = Router();
-const CLIENT_URL = 'http://localhost:3000/projects';
-//'https://newcastle-organizer.vercel.app/projects';
+//const CLIENT_URL = 'http://localhost:3000/projects';
+const CLIENT_URL = 'https://newcastle-organizer.vercel.app/projects';
 
 googleAuthRouter.get('/success', (req, res, next) => {
   if (req.user) {

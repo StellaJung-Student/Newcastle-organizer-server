@@ -3,6 +3,8 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import AuthRouter from './router/auth/auth';
 import GoogleAuthRouter from './router/auth/google';
+import GithubAuthRouter from './router/auth/github';
+import FacebookAuthRouter from './router/auth/facebook';
 import cors from 'cors';
 import ProjectRouter from './router/resources/projects';
 import UserProjectRouter from './router/resources/user/projects';
@@ -56,6 +58,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth/google', GoogleAuthRouter);
+app.use('/auth/github', GithubAuthRouter);
+app.use('/auth/facebook', FacebookAuthRouter);
 app.use('/api/auth', AuthRouter);
 app.use('/api/projects', ProjectRouter);
 app.use('/api/user/projects', UserProjectRouter);

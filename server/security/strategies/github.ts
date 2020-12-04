@@ -1,24 +1,26 @@
 import passport from 'passport';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
-import { FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET } from '../../configs/baseConfig';
+import { Strategy as GithubStrategy } from 'passport-github';
+import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '../../configs/baseConfig';
 import { getRepository } from 'typeorm';
 import User from '../../models/User';
 
 const strategy = () => {
   passport.use(
-    new FacebookStrategy(
+    new GithubStrategy(
       {
-        clientID: FACEBOOK_CLIENT_ID,
-        clientSecret: FACEBOOK_CLIENT_SECRET,
-        callbackURL: 'http://localhost:8080/auth/facebook/callback',
-        profileFields: ['id', 'displayName', 'photos', 'email'],
+        clientID: GITHUB_CLIENT_ID,
+        clientSecret: GITHUB_CLIENT_SECRET,
+        callbackURL: 'http://localhost:8080/auth/github/callback',
       },
-      async function (accessToken, refreshToken, profile, cb) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      async function (accessToken, refreshToken, profile: any, cb) {
         const userRepository = getRepository(User);
+        // For sb with private email
+        const email = profile._json.email === null ? `${profile.username}@github.com` : profile._json.email;
         try {
           let user = await userRepository.findOne({
             where: {
-              email: profile._json.email,
+              email,
             },
           });
           if (user != null) {
@@ -26,7 +28,7 @@ const strategy = () => {
             user.googleId = profile.id;
             return cb(null, user);
           } else {
-            user = new User(profile._json.email, '', '', '', profile.username || '', profile.id, '');
+            user = new User(email, '', '', '', profile.username || '', profile.id, '');
             user = await userRepository.save(user);
             return cb(null, user);
           }

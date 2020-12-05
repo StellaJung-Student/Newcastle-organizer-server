@@ -28,7 +28,7 @@ const strategy = () => {
             user.googleId = profile.id;
             return cb(null, user);
           } else {
-            user = new User(email, '', '', '', profile.username || '', profile.id, '');
+            user = new User(email, '', '', '', profile.username || '', '', '', profile.id);
             user = await userRepository.save(user);
             return cb(null, user);
           }

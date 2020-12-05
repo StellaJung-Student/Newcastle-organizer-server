@@ -27,6 +27,9 @@ export default class User {
   @Column({ nullable: true })
   facebookId: string;
 
+  @Column({ nullable: true })
+  githubId: string;
+
   @OneToMany((type) => Project, (project) => project.owner)
   projects: Project[];
 
@@ -37,7 +40,8 @@ export default class User {
     lastname: string,
     username: string,
     googleId: string,
-    facebookId: string
+    facebookId: string,
+    githubId: string
   ) {
     this.email = email;
     this.password = password;
@@ -46,5 +50,6 @@ export default class User {
     this.username = username;
     this.googleId = googleId;
     this.facebookId = facebookId;
+    this.githubId = githubId;
   }
 }

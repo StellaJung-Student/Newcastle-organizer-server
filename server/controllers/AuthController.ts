@@ -29,7 +29,7 @@ export default class AuthController {
     try {
       //Hash password before inserting to database
       const hashedPassword = await hashPassword(password);
-      await userRepository.save(new User(email, hashedPassword, firstname, lastname, username, null, null));
+      await userRepository.save(new User(email, hashedPassword, firstname, lastname, username, null, null, null));
       res.status(201).json({
         message: 'Account created',
       });
@@ -65,6 +65,7 @@ export default class AuthController {
         delete user.email;
         delete user.googleId;
         delete user.facebookId;
+        delete user.githubId;
         const refreshTokenModel = new RefreshToken();
         const refreshToken = uuidv4();
         refreshTokenModel.refreshToken = refreshToken;
@@ -100,6 +101,7 @@ export default class AuthController {
         delete user.email;
         delete user.googleId;
         delete user.facebookId;
+        delete user.githubId;
         return res.status(200).json({
           accessToken: token,
         });

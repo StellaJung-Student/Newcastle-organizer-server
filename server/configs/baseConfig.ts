@@ -17,3 +17,5 @@ export const DB_SUBSCRIBERS = process.env.DB_SUBSCRIBERS;
 export const DIR_ENTITIES = process.env.DIR_ENTITIES;
 export const DIR_MIGRATIONS = process.env.DIR_MIGRATIONS;
 export const DIR_SUBSCRIBERS = process.env.DIR_SUBSCRIBERS;
+export const NODEMAILER_EMAIL = process.env.NODEMAILER_EMAIL;
+export const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD;

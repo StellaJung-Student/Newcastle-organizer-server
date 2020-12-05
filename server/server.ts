@@ -24,7 +24,7 @@ createConnection({
   password: AWS_RDS_PASSWORD,
   database: AWS_RDS_INIT_DB,
   synchronize: true,
-  logging: false,
+  logging: true,
   entities: [DB_ENTITIES],
   migrations: [DB_MIGRATIONS],
   subscribers: [DB_SUBSCRIBERS],

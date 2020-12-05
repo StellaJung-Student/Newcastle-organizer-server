@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import Project from './Project';
 
 @Entity()
-export default class User {
+export default class Users {
   @PrimaryGeneratedColumn()
   id: string;
 
@@ -32,6 +32,15 @@ export default class User {
 
   @OneToMany((type) => Project, (project) => project.owner)
   projects: Project[];
+
+  @Column({ default: false })
+  isEnabled: boolean;
+
+  @Column({ default: false })
+  isAccountExpired: boolean;
+
+  @Column({ default: false })
+  isBanned: boolean;
 
   constructor(
     email: string,
